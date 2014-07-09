@@ -1,4 +1,4 @@
-function sendRequest(url){
+function sendRequest(request, url){
 	request.onreadystatechange = serveDrink;
 	request.open("GET", url, true);
 	request.send(null);
@@ -23,7 +23,7 @@ function getBeverage(){
 }
 
 function orderCoffee(){
-	var name = document.getElementById.("name").value;
+	var name = document.getElementById("name").value;
 	var beverage = getBeverage();
 	var size = getSize();
 
@@ -33,17 +33,17 @@ function orderCoffee(){
 		replaceText(coffeemakerStatusDiv1,"現在" + name +"さんの"+ size + "" + beverage + "を作っています");
 		document.forms[0].reset();
 
-		var url = "coffeemaker.php?name" + escape(name) +
+		var url = "coffeemaker.php?name=" + escape(name) +
 				"&size=" + escape(size) + 
 				"&beverage=" + escape(beverage) +
 				"&coffeemaker=1";
 
-		sendRequest(url);
+		sendRequest(request1, url);
 	}else{
-		var coffeemakerSrarusDiv2 = document.getElementById("coffeemaker2-status");
-		status = getText(coffeemakerSrarusDiv2);
-		if status == ""){
-			replaceText(coffeemakerSrarusDiv2, "現在" + name + "さんの" +
+		var coffeemakerStarusDiv2 = document.getElementById("coffeemaker2-status");
+		status = getText(coffeemakerStatusDiv2);
+		if (status == "待機中"){
+			replaceText(coffeemakerStatusDiv2, "現在" + name + "さんの" +
 							size + "" + beverage + "を作っています");
 			document.forms[0].reset();
 			var url = "coffeemaker.php?name=" + escape(name) +
@@ -55,27 +55,46 @@ function orderCoffee(){
 		alert("申し訳ございません!コーヒーメーカーは２台とも使用中です。" + "後ほど改めてご利用ください");
 		}
 }
+}
 
-function serveDRINK(){
-	if(request.readyState == 4) {
-		if(request.status == 200) {
-			var response = request.responseText;
+function serveDrink(){
+	if(request1.readyState == 4) {
+		if(request1.status == 200) {
+			var response = request1.responseText;
 			var whichCoffemaker = response.substring(0,1);
 			var name = response.substring(1, response.length);
 			if (whichCoffeemaker == "1"){
 				var coffeemakerStatusDiv1 = document.getElementById("coffeemaker1-status");
 				replaceText(CoffeemakerStatusDiv1, "待機中");
+				}else{
+				var coffeemakerStatusDiv2 = document.getElementById("coffeemaker2-status");
+				replaceText(coffeemakerStatusDic2,"待機中");
 				}
 
 			alert(name + "さんのコーヒーができました！");
+			request1 = createRequest();
 			} else
 			alert("エラー！リクエストステータス:" + request.status);
-			}
-		}
+			}else if(request2.readyState == 4){
+				ifrequest2.status == 200){
+      var response = request2.responseText;
+      var whichCoffeemaker = response.substring(0, 1);
+      var name = response.substring(1, response.length);
+      if (whichCoffeemaker == "1") {
+        var coffeemakerStatusDiv1 = 
+          document.getElementById("coffeemaker1-status");
+        replaceText(coffeemakerStatusDiv1, "待機中");
+      } else {
+        var coffeemakerStatusDiv2 = 
+          document.getElementById("coffeemaker2-status");
+        replaceText(coffeemakerStatusDiv2, "待機中");
+      }
+      alert(name + ", さんのコーヒーができました!");
+      request2 = createRequest();
+    } else 
+      alert("エラー！リクエストステータス: " + request2.status);
+  }
+}
 
 
-		}else
-			alert("エラー!リクエストステータス:" + request.status);
-		}
-	}
-
+		
