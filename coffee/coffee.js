@@ -27,7 +27,8 @@ function orderCoffee(){
 	var beverage = getBeverage();
 	var size = getSize();
 
-	var coffeemakerStatusDiv1 = document.getElementById("coffeemaker1-status");
+	var coffeemakerStatusDiv1 = 
+		document.getElementById("coffeemaker1-status");
 	var status = getText(coffeemakerStatusDiv1);
 	if(status =="待機中"){
 		replaceText(coffeemakerStatusDiv1,"現在" + name +"さんの"+ size + "" + beverage + "を作っています");
